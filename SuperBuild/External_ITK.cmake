@@ -55,10 +55,10 @@ set(ITK_GIT_REPOSITORY "${git_protocol}://github.com/InsightSoftwareConsortium/I
 mark_as_advanced(ITK_GIT_REPOSITORY)
 sitk_legacy_naming(ITK_GIT_REPOSITORY ITK_REPOSITORY)
 
-set(_DEFAULT_ITK_GIT_TAG "v5.1.1")
-set(ITK_GIT_TAG "${_DEFAULT_ITK_GIT_TAG}" CACHE STRING "Tag in ITK git repo")
-mark_as_advanced(ITK_GIT_TAG)
-set(ITK_TAG_COMMAND GIT_TAG "${ITK_GIT_TAG}")
+# set(_DEFAULT_ITK_GIT_TAG "v5.1.1")
+# set(ITK_GIT_TAG "${_DEFAULT_ITK_GIT_TAG}" CACHE STRING "Tag in ITK git repo")
+# mark_as_advanced(ITK_GIT_TAG)
+# set(ITK_TAG_COMMAND GIT_TAG "${ITK_GIT_TAG}")
 
 set(ITK_USE_GIT_PROTOCOL 0)
 if("${git_protocol}" STREQUAL "git")
@@ -77,16 +77,16 @@ else()
 endif()
 
 
-if( ITK_GIT_TAG STREQUAL _DEFAULT_ITK_GIT_TAG )
-  # Unable to use ITK_LEGACY_REMOVE due to change in the enum types.
-  # list( APPEND ep_itk_args "-DITK_LEGACY_REMOVE:BOOL=ON" )
-endif()
+# if( ITK_GIT_TAG STREQUAL _DEFAULT_ITK_GIT_TAG )
+#   # Unable to use ITK_LEGACY_REMOVE due to change in the enum types.
+#   # list( APPEND ep_itk_args "-DITK_LEGACY_REMOVE:BOOL=ON" )
+# endif()
 
 file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/${proj}-build/CMakeCacheInit.txt" "${ep_itk_cache}\n${ep_common_cache}" )
 
 ExternalProject_Add(${proj}
   GIT_REPOSITORY ${ITK_GIT_REPOSITORY}
-  ${ITK_TAG_COMMAND}
+  # ${ITK_TAG_COMMAND}
   UPDATE_COMMAND ""
   SOURCE_DIR ${proj}
   BINARY_DIR ${proj}-build
@@ -106,6 +106,7 @@ ExternalProject_Add(${proj}
   -DITK_USE_KWSTYLE:BOOL=OFF
   -DITK_USE_GIT_PROTOCOL:BOOL=${ITK_USE_GIT_PROTOCOL}
   -DITK_INSTALL_PACKAGE_DIR=lib/cmake/ITK
+  -DITK_USE_SYSTEM_PNG=ON
   BUILD_COMMAND ${BUILD_COMMAND_STRING}
   DEPENDS
     ${ITK_DEPENDENCIES}
